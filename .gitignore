@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Python related
 venv/
 __pycache__/
@@ -14,3 +15,43 @@ Thumbs.db
 # Editor files
 .vscode/
 *.swp
+=======
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual environment
+venv/
+env/
+.venv/
+ENV/
+
+# Logs and cache
+*.log
+*.sqlite3
+*.db
+*.pid
+*.seed
+*.bak
+*.swp
+.DS_Store
+.idea/
+.vscode/
+*.egg-info/
+build/
+dist/
+.cache/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Environment files
+.env
+.env.*
+
+# OS specific
+Thumbs.db
+ehthumbs.db
+>>>>>>> d3e411ca20859e5f87a8836579f7e0b5e57bf899
