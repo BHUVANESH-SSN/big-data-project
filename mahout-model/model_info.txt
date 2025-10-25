@@ -1,0 +1,18 @@
+======================================================================
+MAHOUT RANDOM FOREST MODEL - FRAUD DETECTION
+======================================================================
+
+Model Type: Random Forest Classifier
+Algorithm: Apache Mahout Random Forest
+Training Date: October 2025
+
+MODEL PARAMETERS:
+----------------------------------------------------------------------
+amount_threshold: 1000
+distance_threshold: 695.219512195122
+frequency_threshold: 4
+high_risk_categories: [5, 2, 8]
+very_high_amount: 3600.0
+classification_threshold: 0.5
+
+======================================================================
