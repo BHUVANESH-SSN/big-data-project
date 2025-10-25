@@ -1,14 +1,10 @@
-"""
-Complete Python Reset Script
-Clears all databases, Kafka topics, and consumer groups
-Run this before each demo to start fresh
-"""
+
 import os
 import subprocess
 import time
 
 def clear_databases():
-    """Delete SQLite database files"""
+   
     print("\n🗑️  Step 1: Clearing databases...")
     databases = ['legitimate_transactions.db', 'fraudulent_transactions.db']
     
@@ -21,7 +17,7 @@ def clear_databases():
     print("  ✓ Databases cleared\n")
 
 def reset_kafka_topic(kafka_dir):
-    """Delete and recreate Kafka topic"""
+    
     print("🔄 Step 2: Resetting Kafka topic...")
     
     # Delete topic
@@ -58,7 +54,7 @@ def reset_kafka_topic(kafka_dir):
     print()
 
 def reset_consumer_group(kafka_dir):
-    """Delete consumer group to reset offsets"""
+   
     print("🔄 Step 3: Resetting consumer group...")
     
     try:
@@ -75,7 +71,7 @@ def reset_consumer_group(kafka_dir):
     print()
 
 def verify_clean(kafka_dir):
-    """Verify topic is empty"""
+    
     print("✅ Step 4: Verifying everything is clean...")
     
     try:

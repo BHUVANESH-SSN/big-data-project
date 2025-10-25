@@ -1,22 +1,16 @@
-"""
-Train Mahout Random Forest Model
-This script trains the model on historical labeled data
-"""
+
 import pandas as pd
 import pickle
 import os
 
 class MahoutRandomForestTrainer:
-    """
-    Mahout Random Forest Model Training
-    Trains on historical fraud data and saves model parameters
-    """
+    
     
     def __init__(self):
         self.model_params = {}
     
     def load_training_data(self, csv_file='training_fraud_data.csv'):
-        """Load labeled training data"""
+
         print("Loading training data...")
         df = pd.read_csv(csv_file)
         print(f"✓ Loaded {len(df)} transactions")
@@ -25,10 +19,7 @@ class MahoutRandomForestTrainer:
         return df
     
     def train_random_forest(self, df):
-        """
-        Train Mahout Random Forest
-        Analyzes patterns in labeled data to learn decision tree thresholds
-        """
+        
         print("\nTraining Random Forest with 4 decision trees...")
         
         # Analyze fraud patterns from training data
@@ -39,8 +30,8 @@ class MahoutRandomForestTrainer:
         fraud_high_amount = fraud_data[fraud_data['amount'] > 1000]
         avg_fraud_distance = fraud_high_amount['distance_from_home'].mean()
         self.model_params['amount_threshold'] = 1000
-        self.model_params['distance_threshold'] = avg_fraud_distance * 0.8  # 80% of avg
-        
+        self.model_params['distance_threshold'] = avg_fraud_distance * 0.8  
+
         # Decision Tree 2: Frequency + Amount
         fraud_freq = fraud_data['transaction_count_1h'].mean()
         self.model_params['frequency_threshold'] = int(fraud_freq * 0.7)
@@ -62,7 +53,7 @@ class MahoutRandomForestTrainer:
         print(f"✓ Tree 4 - Very high amount: ${self.model_params['very_high_amount']:.2f}")
     
     def calculate_accuracy(self, df):
-        """Test model accuracy on training data"""
+       
         correct = 0
         
         for _, row in df.iterrows():
@@ -93,14 +84,14 @@ class MahoutRandomForestTrainer:
         return accuracy
     
     def save_model(self, output_dir='mahout-model'):
-        """Save trained model parameters"""
+        
         os.makedirs(output_dir, exist_ok=True)
         
-        # Save model as pickle file
+        
         with open(f'{output_dir}/random_forest_model.pkl', 'wb') as f:
             pickle.dump(self.model_params, f)
         
-        # Save model metadata
+        
         with open(f'{output_dir}/model_info.txt', 'w') as f:
             f.write("="*70 + "\n")
             f.write("MAHOUT RANDOM FOREST MODEL - FRAUD DETECTION\n")
@@ -122,20 +113,20 @@ if __name__ == '__main__':
     print("MAHOUT RANDOM FOREST TRAINING")
     print("="*70 + "\n")
     
-    # Initialize trainer
+   
     trainer = MahoutRandomForestTrainer()
     
-    # Load training data
+   
     df = trainer.load_training_data('training_fraud_data.csv')
     
-    # Train model
+   
     trainer.train_random_forest(df)
     
-    # Calculate accuracy
+    
     accuracy = trainer.calculate_accuracy(df)
     print(f"\n✓ Training Accuracy: {accuracy:.2f}%")
     
-    # Save model
+    
     trainer.save_model()
     
     print("\n" + "="*70)

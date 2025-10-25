@@ -1,14 +1,11 @@
-"""
-Kafka Producer - Sends credit card transactions every 5 seconds
-Simulates real-time transaction stream
-"""
+
 import csv
 import json
 import time
 from kafka import KafkaProducer
 
 def create_producer():
-    """Create Kafka producer instance"""
+   
     producer = KafkaProducer(
         bootstrap_servers=['localhost:9092'],
         value_serializer=lambda v: json.dumps(v).encode('utf-8')
@@ -16,7 +13,7 @@ def create_producer():
     return producer
 
 def send_transactions(csv_file='credit_card_transactions.csv'):
-    """Read CSV and send transactions every 5 seconds"""
+   
     producer = create_producer()
     topic = 'credit-card-transactions'
     
@@ -27,7 +24,7 @@ def send_transactions(csv_file='credit_card_transactions.csv'):
         csv_reader = csv.DictReader(file)
         
         for row in csv_reader:
-            # Convert row to dictionary and send
+            
             transaction = {
                 'transaction_id': row['transaction_id'],
                 'amount': float(row['amount']),

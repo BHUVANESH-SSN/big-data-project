@@ -1,8 +1,4 @@
-"""
-Kafka Consumer with Fraud Detection
-Uses Mahout Random Forest Algorithm for classification
-Stores legitimate and fraudulent transactions in separate databases
-"""
+
 import json
 import sqlite3
 import pickle
@@ -12,11 +8,9 @@ from kafka import KafkaConsumer
 class FraudDetector:
     """
     Fraud Detection using Mahout Random Forest Algorithm
+
     
-    This implementation uses the Random Forest ensemble method from Apache Mahout.
-    Random Forest creates multiple decision trees and combines their predictions
-    for robust fraud classification.
-    
+
     Features used by the model:
     - amount: Transaction amount
     - distance_from_home: Geographic distance
@@ -34,7 +28,7 @@ class FraudDetector:
         self.load_trained_model()
     
     def setup_databases(self):
-        """Create tables in both databases"""
+        
         # Legitimate transactions table
         self.legit_db.execute('''
             CREATE TABLE IF NOT EXISTS transactions (
@@ -66,7 +60,7 @@ class FraudDetector:
         self.fraud_db.commit()
     
     def load_trained_model(self):
-        """Load the trained Mahout Random Forest model"""
+        
         model_path = 'mahout-model/random_forest_model.pkl'
         
         if os.path.exists(model_path):
@@ -77,12 +71,12 @@ class FraudDetector:
         else:
             print("⚠️  No trained model found. Using default parameters.")
             print("   Run: python train_model.py to train the model first!")
-            # Default parameters (fallback)
+            
             self.model_params = {
                 'amount_threshold': 1000,
                 'distance_threshold': 400,
                 'frequency_threshold': 3,
-                'high_risk_categories': [2, 5, 8],  # electronics, jewelry, travel
+                'high_risk_categories': [2, 5, 8],  
                 'very_high_amount': 2500,
                 'classification_threshold': 0.5
             }
@@ -91,8 +85,7 @@ class FraudDetector:
         """
         Mahout Random Forest Classification Algorithm
         
-        Uses the trained Random Forest model to classify transactions.
-        The model was trained on historical fraud data (training_fraud_data.csv).
+        
         
         Decision Trees in the Forest:
         1. Tree analyzing amount + distance patterns
@@ -100,15 +93,14 @@ class FraudDetector:
         3. Tree analyzing merchant category risk
         4. Tree analyzing unusual high-value transactions
         
-        The ensemble vote produces a final fraud score (0.0 to 1.0+)
-        Threshold is learned from training data
+        
         """
         amount = transaction['amount']
         distance = transaction['distance_from_home']
         tx_count = transaction['transaction_count_1h']
         category = transaction['merchant_category']
         
-        # Map category name to encoded value
+        
         category_mapping = {
             'grocery': 1, 'electronics': 2, 'restaurant': 3, 'clothing': 4,
             'jewelry': 5, 'gas_station': 6, 'online_service': 7, 'travel': 8,
@@ -145,7 +137,7 @@ class FraudDetector:
     def store_transaction(self, transaction, is_fraud, fraud_score):
         """Store transaction in appropriate database"""
         if is_fraud:
-            # Store in fraud database
+           
             self.fraud_db.execute('''
                 INSERT INTO transactions 
                 (transaction_id, amount, time, merchant_category, distance_from_home, 
@@ -163,7 +155,7 @@ class FraudDetector:
             self.fraud_db.commit()
             print(f"  ⚠️  FRAUD DETECTED - Stored in fraud database (score: {fraud_score:.2f})")
         else:
-            # Store in legitimate database
+            
             self.legit_db.execute('''
                 INSERT INTO transactions 
                 (transaction_id, amount, time, merchant_category, distance_from_home, 
@@ -181,12 +173,12 @@ class FraudDetector:
             print(f"  ✓  LEGITIMATE - Stored in legitimate database")
     
     def close(self):
-        """Close database connections"""
+        
         self.legit_db.close()
         self.fraud_db.close()
 
 def consume_transactions():
-    """Consume transactions from Kafka and classify them"""
+    
     consumer = KafkaConsumer(
         'credit-card-transactions',
         bootstrap_servers=['localhost:9092'],
@@ -194,7 +186,7 @@ def consume_transactions():
         auto_offset_reset='earliest',
         enable_auto_commit=True,
         group_id='fraud-detection-group'
-        # Removed consumer_timeout_ms - consumer will wait indefinitely
+        
     )
     
     detector = FraudDetector()
@@ -216,10 +208,10 @@ def consume_transactions():
             print(f"   Category: {transaction['merchant_category']}")
             print(f"   Distance from home: {transaction['distance_from_home']} km")
             
-            # Classify transaction
+            
             is_fraud, fraud_score = detector.classify_transaction(transaction)
             
-            # Store in appropriate database
+            
             detector.store_transaction(transaction, is_fraud, fraud_score)
             print("-" * 70)
     

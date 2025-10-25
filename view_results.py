@@ -1,6 +1,3 @@
-"""
-View database contents - Quick utility to check stored transactions
-"""
 import sqlite3
 
 def view_database(db_name):

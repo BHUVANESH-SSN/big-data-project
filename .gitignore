@@ -1,0 +1,16 @@
+# Python related
+venv/
+__pycache__/
+*.pyc
+
+# Databases and model artifacts
+*.db
+mahout-model/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor files
+.vscode/
+*.swp
