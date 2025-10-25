@@ -24,7 +24,7 @@
 - [Demo Guide](#demo-guide)
 - 
 - ## Project Flow
-- ![Flow of the Project](MD_FILES/project_flow.png)
+- ![Flow of the Project](MD_FILES/project_flow.jpg)
 
 ---
 
@@ -603,4 +603,5 @@ Big Data Project - Credit Card Fraud Detection System
 
 **Ready for Demo?** ✅  
 Run `python3 full_reset.py` then start the system! 🚀
+
 
